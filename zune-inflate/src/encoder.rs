@@ -8,6 +8,7 @@ use alloc::vec;
 use alloc::vec::Vec;
 
 use crate::constants::DEFLATE_BLOCKTYPE_UNCOMPRESSED;
+#[cfg(feature = "zlib")]
 use crate::utils::calc_adler_hash;
 
 #[derive(Debug, Copy, Clone)]
@@ -151,6 +152,7 @@ impl<'a> DeflateEncoder<'a>
         }
     }
 
+    #[cfg(feature = "zlib")]
     pub fn encode_zlib(&mut self) -> Vec<u8>
     {
         let extra = 40 * ((self.data.len() + 41) / 40);
