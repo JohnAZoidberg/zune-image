@@ -9,8 +9,8 @@
 //! come with how they chose to support jpeg xl
 //!
 //!
-use std::fmt::Debug;
-use std::ops::{Add, BitXor, Shr, Sub};
+use core::fmt::Debug;
+use core::ops::{Add, BitXor, Shr, Sub};
 
 use crate::bit_writer::{encode_hybrid_unit_000, BitWriter};
 use crate::encoder::PrefixCode;

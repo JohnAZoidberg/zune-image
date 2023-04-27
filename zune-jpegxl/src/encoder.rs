@@ -1,8 +1,10 @@
 //! A simple jpeg xl encoder
-use std::cmp::{max, min};
-use std::marker::PhantomData;
-use std::sync::atomic::{AtomicUsize, Ordering};
-use std::sync::{Arc, Mutex};
+use alloc::vec;
+use alloc::vec::Vec;
+use core::cmp::{max, min};
+use core::marker::PhantomData;
+use core::sync::atomic::{AtomicUsize, Ordering};
+use alloc::sync::{Arc, Mutex};
 
 use log::{info, log_enabled, Level};
 use zune_core::bit_depth::BitDepth;
@@ -1197,14 +1199,14 @@ impl<'a> JxlSimpleEncoder<'a>
 
         if log_enabled!(Level::Info)
         {
-            println!();
+            info!("");
             info!("JXL details");
             info!("Width: {}", width);
             info!("Height: {}", height);
             info!("Colorspace: {:?}", colorspace);
             info!("Depth: {:?}", depth);
             info!("Configured threads: {:?}", self.options.get_num_threads());
-            println!();
+            info!("");
         }
 
         let expected = calculate_expected_input(&self.options);

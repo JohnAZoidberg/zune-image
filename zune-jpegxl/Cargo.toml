@@ -11,7 +11,8 @@ log = "0.4.17"
 
 [features]
 threads = []
-default = ["threads"]
+std = ["zune-core/std"]
+default = ["std", "threads"]
 
 [dev-dependencies]
 zune-ppm = { path = "../zune-ppm" }

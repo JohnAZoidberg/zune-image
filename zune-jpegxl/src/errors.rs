@@ -1,6 +1,6 @@
 #![allow(clippy::uninlined_format_args)]
 
-use std::fmt::{Debug, Formatter};
+use core::fmt::{Debug, Formatter};
 
 use zune_core::bit_depth::BitDepth;
 use zune_core::colorspace::ColorSpace;
@@ -27,7 +27,7 @@ pub const SUPPORTED_DEPTHS: [BitDepth; 2] = [BitDepth::Eight, BitDepth::Sixteen]
 
 impl Debug for JxlEncodeErrors
 {
-    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result
+    fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result
     {
         match self
         {
