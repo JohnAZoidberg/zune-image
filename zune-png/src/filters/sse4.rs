@@ -331,6 +331,7 @@ pub fn defilter_avg_sse<const SIZE: usize>(prev_row: &[u8], raw: &[u8], current:
             panic!("Internal error, calling platform specific function where not supported")
         }
     }
+    #[cfg(target_feature = "sse2")]
     unsafe {
         defilter_avg_sse2_inner::<SIZE>(prev_row, raw, current);
     }

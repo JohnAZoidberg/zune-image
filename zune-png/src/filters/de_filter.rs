@@ -4,6 +4,7 @@
  * This software is free software; You can redistribute it or modify it under terms of the MIT, Apache License or Zlib license
  */
 
+#[cfg(feature = "sse")]
 use crate::filters::sse4;
 
 #[allow(clippy::manual_memcpy)]

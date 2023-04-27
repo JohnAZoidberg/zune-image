@@ -7,6 +7,7 @@
 use zune_core::bytestream::ZByteWriter;
 use zune_core::colorspace::ColorSpace;
 
+#[cfg(feature = "crc")]
 use crate::crc::calc_crc;
 use crate::decoder::PngChunk;
 use crate::encoder::PngEncoder;
@@ -96,11 +97,14 @@ pub fn write_header_fn<F: Fn(&PngEncoder, &mut ZByteWriter)>(
     // go back to end and write hash
     writer.set_position(start);
 
-    let bytes = writer.peek_at(0, length).unwrap();
-    let crc32 = calc_crc(bytes);
+    #[cfg(feature = "crc")]
+    {
+        let bytes = writer.peek_at(0, length).unwrap();
+        let crc32 = calc_crc(bytes);
 
-    writer.set_position(end);
-    writer.write_u32_be(crc32);
+        writer.set_position(end);
+        writer.write_u32_be(crc32);
+    }
 }
 
 pub(crate) fn write_header(chunk: PngChunk, data: &[u8], writer: &mut ZByteWriter)
@@ -108,21 +112,26 @@ pub(crate) fn write_header(chunk: PngChunk, data: &[u8], writer: &mut ZByteWrite
     // write length
     writer.write_u32_be(chunk.length as u32);
     // points to chunk type+data
+    #[cfg(feature = "crc")]
     let start_chunk = writer.position();
     // write chunk name
     writer.write_all(&chunk.chunk).unwrap();
     // write chunk data
     writer.write_all(data).unwrap();
-    let end = writer.position();
-    // write crc
-    // go back to where start chunk points to
-    writer.set_position(start_chunk);
-    // get everything until where we wrote
 
-    let data = writer.peek_at(0, 4/*name*/ + data.len()).unwrap();
-    let crc32 = calc_crc(data);
-    // go back to bytes past data
-    writer.set_position(end);
-    // and write crc32
-    writer.write_u32_be(crc32);
+    #[cfg(feature = "crc")]
+    {
+        let end = writer.position();
+        // write crc
+        // go back to where start chunk points to
+        writer.set_position(start_chunk);
+        // get everything until where we wrote
+
+        let data = writer.peek_at(0, 4/*name*/ + data.len()).unwrap();
+        let crc32 = calc_crc(data);
+        // go back to bytes past data
+        writer.set_position(end);
+        // and write crc32
+        writer.write_u32_be(crc32);
+    }
 }
